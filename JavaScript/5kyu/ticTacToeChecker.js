@@ -13,6 +13,7 @@ We want our function to return:
 0 if it's a cat's game (i.e. a draw).
 You may assume that the board passed in is valid in the context of a game of Tic-Tac-Toe.*/
 
+//#1
 
 function isSolved(board) {
     //создаем массив возможных комбинаций
@@ -36,4 +37,19 @@ function isSolved(board) {
   } else {
     return -1;
   }
+}
+
+//#2
+
+function isSolved(board) {
+  let str = board.join('').replace(/,/g,'');
+  if (/^111|...111...|111$|1..1..1|1...1...1/.test(str)) {
+    return 1;
+  } else if (/^222|...222...|222$|2..2..2|2...2...2/.test(str)) {
+    return 2;
+  } else if (/0/.test(str)) {
+    return -1;
+  } else {
+    return 0;
+  }  
 }
