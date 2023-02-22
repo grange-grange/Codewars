@@ -29,44 +29,30 @@ N.B. You should assume that all the test input will be valid, as specified above
 
 P.S. The situation in this kata can be likened to the more-computer-science-related idea of a thread pool, with relation to running multiple processes at the same time: https://en.wikipedia.org/wiki/Thread_pool*/
 
-//ЕЩЕ НАДО ДОПИЛИВАТЬ!
-
 function queueTime(customers, n) {
   if (customers == 0) {
     return 0;
   } else if (n === 1) {
     return customers.reduce((a, b) => a + b);
+  } else if (customers.length <= n) {
+    return Math.max.apply(null, customers);
   }
   
-  if (customers.length < n) {
-    n = customers.length;
-  }
-  
-  let tills = [[customers[0]]];
+  let tills = [];
   let freeTill = 0;
-  let freeTillSum = customers[0];
-  for (let i = 1; i < n; i++) {
-    tills.push([0]);
+  for (let i = 0; i < n; i++) {
+    tills.push(0);
   }
-  for (let i = 1; i < customers.length; i++) {    
+  for (let i = 0; i < customers.length; i++) { 
+    tills[freeTill] += (customers[i]);
     for (let j = 0; j < n; j++) {
-      console.log(tills[j]);
-      if (freeTillSum !== 0 && tills[j].reduce((a,b) => a + b) < freeTillSum) {
+      if (tills[j] < tills[freeTill]) {
         freeTill = j;
       }     
     }
-    console.log(freeTill);
-    tills[freeTill].push(customers[i]);    
-    console.log(tills);
-    freeTillSum = tills[freeTill].reduce((a,b) => a + b);
-    console.log(freeTillSum);
   }
   
-  let tillSum = [];
-  for (let i = 0; i < n; i++) {
-    tillSum.push(tills[i].reduce((a, b) => a + b));
-  }
-  
-  return Math.max.apply(null, tillSum);
+  return Math.max.apply(null, tills);
 }
+
 
