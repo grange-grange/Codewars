@@ -12,26 +12,20 @@ solution([-10, -9, -8, -6, -3, -2, -1, 0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15, 1
 */
 
 function solution(list){
-    let newArr = list.map(a => {
-        Math.abs(a - list[list.indexOf(a) + 1]) === 1 
-        && Math.abs(a - list[list.indexOf(a) - 1]) === 1 
-        ? ' '.repeat(list.indexOf(a)) 
+    let newArr = list.map((a, i) => {
+        return Math.abs(a - list[i + 1]) === 1
+        && Math.abs(a - list[i - 1]) === 1
+        ? '-'
         : a
+    })    
+    newArr = newArr.filter((a, i) => {
+        return (a + newArr[i + 1]) !== '--'
     })
-
-    newArr = newArr.filter(a => {
-        (a.toString() + newArr[newArr.indexOf(a) + 1]).trim() !== ''
-    }).map(a => {
-        typeof a === 'string' 
-        ? '-' 
+    return newArr.map((a, i) => {
+        return Number.isInteger(a)
+        && newArr[i + 1] !== '-'
+        && i !== newArr.length - 1
+        ? a + ','
         : a
-    })
-
-    return newArr.map(a => {
-        a === '-' 
-        || newArr[newArr.indexOf(a) + 1] === '-' 
-        || newArr.indexOf(a) === newArr.length - 1 
-        ? a 
-        : a + ','
     }).join('')
 }
