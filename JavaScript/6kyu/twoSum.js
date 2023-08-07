@@ -10,11 +10,11 @@ twoSum([1, 2, 3], 4) // returns [0, 2] or [2, 0]*/
 
 function twoSum(numbers, target) {
   let res = []
-  cicle: for (let i = 0; i < numbers.length; i++) {
+  cycle: for (let i = 0; i < numbers.length; i++) {
     for (let j = i + 1; j < numbers.length; j++) {
       if (numbers[i] + numbers[j] === target) {
         res = [i, j]
-        break cicle
+        break cycle
       }
     }
   }
