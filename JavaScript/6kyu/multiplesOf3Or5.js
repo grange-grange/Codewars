@@ -5,12 +5,21 @@ Finish the solution so that it returns the sum of all the multiples of 3 or 5 be
 Note: If the number is a multiple of both 3 and 5, only count it once.*/
 function solution(number){
   if (number < 3) return 0
-  let solution = 0
+  let res = 0
   for (let i = number - 1; i >= 3; i--) {
     if (i % 5 === 0 || i % 3 === 0) {
-      solution += i
-    } 
-    
+      res += i
+    }     
   }
-   return solution
+   return res
 }
+
+function solution(number){
+  if (number < 3) return 0
+  let n = number - 1
+  let res = 0
+  if (n % 5 === 0 || n % 3 === 0) {
+    res += n
+  }
+  return res + solution(n)
+} //не подходит: перегруз стека при больших числах
