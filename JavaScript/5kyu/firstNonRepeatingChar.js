@@ -8,7 +8,7 @@ If a string contains all repeating characters, it should return an empty string 
 
 function firstNonRepeatingLetter(s) {
   for (let i = 0; i < s.length; i++) {
-    let re = new RegExp(`${s[i]}`, `gi`)
+    let re = new RegExp(s[i], `gi`)
     if (s.match(re).length === 1) return s[i]
   }
   return ''
