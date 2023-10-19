@@ -75,49 +75,45 @@ Example
 Refer to the example test cases.*/
 
 var theLift = function(queues, capacity) {
-  //console.log(queues, capacity)
   let stopList = [0]
   let direction = true // true = up, false = down
-  let load = []
 
   while(queues.map(x => x.join('')).join('') !== '') {
-    stopList = startLiftCicle(stopList, load, direction, queues, capacity)
-    direction = !direction    
+    stopList = liftCicle(stopList, direction, queues, capacity)
+    direction = !direction
   }
     
   if (stopList[stopList.length - 1] !== 0) stopList.push(0)
   return stopList
 }
 
-function checkFloor(floor, load, direction, queues, capacity) {
-  if (floor === 5) console.log(load, direction, queues, capacity)
-  let addStop = false
+function checkFloor(floor, load, direction, floorQueue, capacity) {
+  let needStop = false 
+  //check if people getting out of the lift
   let setLoad = load.filter(a => a !== floor)
-  if (setLoad.toString() !== load.toString()) addStop = true
-  
-  
-  for (let i = 0; i < queues[floor].length; i++) {    
-    if (direction && queues[floor][i] > floor 
-      || !direction && queues[floor][i] < floor) {
-        addStop = true
+  if (setLoad.toString() !== load.toString()) needStop = true  
+  //check if anyone needs to enter
+  for (let i = 0; i < floorQueue.length; i++) { 
+    if (direction && floorQueue[i] > floor 
+      || !direction && floorQueue[i] < floor) {
+        needStop = true
         if (setLoad.length >= capacity) break
-        setLoad.push(queues[floor][i])
-        delete queues[floor][i]
-        //if (setLoad.length >= capacity) break          
+        setLoad.push(floorQueue[i])
+        delete floorQueue[i]     
     }        
   }
-  return {setLoad, addStop}
+  return {setLoad, needStop}
 }
 
-function startLiftCicle(currentStopList, currentLoad, direction, queues, capacity) {
+function liftCicle(currentStopList, direction, queues, capacity) {
   let stopList = currentStopList
-  let load = currentLoad
+  let load = []
   
   if (direction) {
     for (let floor = 0; floor < queues.length; floor++) {
-      let checkedFloor = checkFloor(floor, load, direction, queues, capacity)
+      let checkedFloor = checkFloor(floor, load, direction, queues[floor], capacity)
       
-      if (checkedFloor.addStop) {
+      if (checkedFloor.needStop) {
         load = checkedFloor.setLoad
         if (stopList[stopList.length - 1] !== floor) stopList.push(floor)
       }
@@ -127,8 +123,8 @@ function startLiftCicle(currentStopList, currentLoad, direction, queues, capacit
   } else {
     
     for (let floor = queues.length - 1; floor >= 0; floor--) {
-      let checkedFloor = checkFloor(floor, load, direction, queues, capacity)
-      if (checkedFloor.addStop) {
+      let checkedFloor = checkFloor(floor, load, direction, queues[floor], capacity)
+      if (checkedFloor.needStop) {
         load = checkedFloor.setLoad
         if (stopList[stopList.length - 1] !== floor) stopList.push(floor)
       }
